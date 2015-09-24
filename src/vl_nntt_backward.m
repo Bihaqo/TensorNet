@@ -9,9 +9,9 @@ function in = vl_nntt_backward(layer, in, out)
 %
 %    in.dzdx is the derivative of the neural network's out Z with respect to
 %       the input in.x;
-%    layer.dzdw{1} is the derivative of Z w.r.t. the cores of the
+%    in.dzdw{1} is the derivative of Z w.r.t. the cores of the
 %       TT-decomposition of the matrix W;
-%    layer.dzdw{2} is the derivative of Z w.r.t. the biases.
+%    in.dzdw{2} is the derivative of Z w.r.t. the biases.
 %
 %    in.x is of size inHeight x inWidth x inChannels x batchSize.
 %
@@ -28,9 +28,9 @@ in.dzdx = full(W' * reshape(out.dzdx, [], batchSize));
 in.dzdx = reshape(in.dzdx, inHeight, inWidth, inChannels, batchSize);
 
 if numel(layer.weights{2}) > 0
-    layer.dzdw{2} = sum(out.dzdx, 4);
+    in.dzdw{2} = sum(out.dzdx, 4);
 else
-    layer.dzdw{2} = [];
+    in.dzdw{2} = [];
 end
 DZDWCore = zeros(size(W.core), 'single');
 if isa(in.x, 'gpuArray')
@@ -122,5 +122,5 @@ for derDim = numDims:-1:1
     der = permute(der, [2, 1, 3]);
     DZDWCore(corePos(derDim):corePos(derDim+1)-1) = der;
 end
-layer.dzdw{1} = DZDWCore;
+in.dzdw{1} = DZDWCore;
 end
