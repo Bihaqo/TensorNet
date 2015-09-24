@@ -1,9 +1,10 @@
 TensorNet
 ==========
 
-This is a MATLAB implementation of the _Tensor Train layer_ (_TT-layer_) of a neural network. In short, the TT-layer acts as a fully-connected layer but is much more compact and allows to use lots of hidden units without slowing down the learning and inference. For the additional information see the following paper:
+This is a MATLAB implementation of the _Tensor Train layer_ (_TT-layer_) of a neural network. In short, the TT-layer acts as a fully-connected layer but is much more compact and allows to use lots of hidden units without slowing down the learning and inference.   
+For the additional information see the following paper:
 
-Tensorizing Neural Networks
+Tensorizing Neural Networks  
 Alexander Novikov, Dmitry Podoprikhin, Anton Osokin, Dmitry Vetrov; In _Advances in Neural Information Processing Systems 28_ (NIPS-2015) [[pdf](http://arxiv.org/pdf/1509.06569v1.pdf)].
 
 Please cite it if you write scientific paper using this code.
@@ -25,3 +26,11 @@ Install the [TT-Toolbox](https://github.com/oseledets/TT-Toolbox) (just download
 Install the [MatConvNet framework](http://www.vlfeat.org/matconvnet/) (preferably with the GPU support). Add the `mataconvnet_path/examples` folder to the MATLAB path to be able to use the `cnn_train` function.
 
 Copy this repository and add the `src` folder into the MATLAB path.
+
+
+Experiments
+==========
+Right now just one basic example with the MNIST dataset is available (more experiments from the paper are comming soon). To try it out, navigate to the `experiments/mnist` folder and type the following command in the MATLAB prompt:
+``` matlab
+[net_tt, info_tt] = cnn_mnist_tt('expDir', 'data/mnist-tt');
+```
