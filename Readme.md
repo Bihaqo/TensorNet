@@ -7,7 +7,7 @@ For the additional information see the following paper:
 Tensorizing Neural Networks  
 Alexander Novikov, Dmitry Podoprikhin, Anton Osokin, Dmitry Vetrov; In _Advances in Neural Information Processing Systems 28_ (NIPS-2015) [[pdf](http://arxiv.org/pdf/1509.06569v1.pdf)].
 
-Please cite it if you write scientific paper using this code.
+Please cite it if you write scientific paper using this code.  
 In BiBTeX format:
 ```latex
 @incollection{novikov15tensornet,
@@ -23,7 +23,7 @@ Installation
 
 Install the [TT-Toolbox](https://github.com/oseledets/TT-Toolbox) (just download it and run `setup.m` to add everything important into the MATLAB path).
 
-Install the [MatConvNet framework](http://www.vlfeat.org/matconvnet/) (preferably with the GPU support). Add the `mataconvnet_path/examples` folder to the MATLAB path to be able to use the `cnn_train` function.
+Install the [MatConvNet framework](http://www.vlfeat.org/matconvnet/) (preferably with the GPU support). TensorNet works with MatConvNet 1.0-beta11 (April 2015) and higher (the latest tested version is 1.0-beta14). Add the `mataconvnet_path/examples` folder to the MATLAB path to be able to use the `cnn_train` function.
 
 Copy this repository and add the `src` folder into the MATLAB path.
 
