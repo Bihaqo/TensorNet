@@ -31,7 +31,7 @@ Copy this repository and add the `src` folder into the MATLAB path.
 
 Experiments
 ==========
-Right now just one basic example with the MNIST dataset is available (more experiments from the paper are comming soon). To try it out, navigate to the `experiments/mnist` folder and type the following command in the MATLAB prompt:
+Right now just one basic example with the MNIST dataset is available (more experiments from the paper are coming soon). To try it out, navigate to the `experiments/mnist` folder and type the following command in the MATLAB prompt:
 ``` matlab
 [net_tt, info_tt] = cnn_mnist_tt('expDir', 'data/mnist-tt');
 ```
