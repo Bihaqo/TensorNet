@@ -131,8 +131,6 @@ for l = tests
           end
           in.x = grandn(9, 8, 5, batchSize, 'single');
           out = [];
-          layer.W
-          size(in.x)
           out = vl_nntt_forward(layer, in, out);
           y = out.x;
           exactY = full(W) * reshape(in.x, [], batchSize);
@@ -150,5 +148,4 @@ for l = tests
       end
     end
   end
-end
 end
