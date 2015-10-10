@@ -28,6 +28,15 @@ Add the `mataconvnet_path/examples` folder to the MATLAB path to be able to use 
 
 Copy this repository and add the `src` folder into the MATLAB path.
 
+Now you can test TensorNet using the command
+``` matlab
+vl_test_ttlayers
+```
+
+To test GPU support (if you have compiled MatConvNet in GPU mode) use:
+``` matlab
+vl_test_ttlayers(1)
+```
 
 Experiments
 ==========
