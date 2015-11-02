@@ -4,29 +4,44 @@ import theano.tensor as T
 import lasagne
 
 class TTLayer(lasagne.layers.Layer):
-        """
-        Parameters
-        ----------
-        References
-        ----------
-        .. [1]  Tensorizing Neural Networks
-            Alexander Novikov, Dmitry Podoprikhin, Anton Osokin, Dmitry Vetrov
-            In Advances in Neural Information Processing Systems 28 (NIPS-2015)
-        Notes
-        -----
-        Examples
-        --------
-        """
-    def __init__(self, incoming, input_shape, output_shape, ranks,
+    """
+    Parameters
+    ----------
+    References
+    ----------
+    .. [1]  Tensorizing Neural Networks
+        Alexander Novikov, Dmitry Podoprikhin, Anton Osokin, Dmitry Vetrov
+        In Advances in Neural Information Processing Systems 28 (NIPS-2015)
+    Notes
+    -----
+    Examples
+    --------
+    """
+    def __init__(self, incoming, tt_input_shape, tt_output_shape, tt_ranks,
                  cores=lasagne.init.Normal(0.01),
                  nonlinearity=lasagne.nonlinearities.rectify, **kwargs):
         super(TTLayer, self).__init__(incoming, **kwargs)
-        self.tt_input_shape = input_shape
-        self.tt_output_shape = output_shape
-        self.tt_ranks = ranks
+        num_inputs = int(np.prod(self.input_shape[1:]))
+        tt_input_shape = np.array(tt_input_shape)
+        tt_output_shape = np.array(tt_output_shape)
+        tt_ranks = np.array(tt_ranks)
+        if np.prod(tt_input_shape) != num_inputs:
+            raise ValueError("The size of the input tensor (i.e. product "
+                             "of the elements in tt_input_shape) should "
+                             "equal to the number of input neurons %d." %
+                             (num_inputs))
+        if tt_input_shape.shape[0] != tt_output_shape.shape[0]:
+            raise ValueError("The number of input and output dimensions "
+                             "should be the same.")
+        if tt_ranks.shape[0] != tt_output_shape.shape[0] + 1:
+            raise ValueError("The number of the TT-ranks should be "
+                             "1 + the number of the dimensions.")
+        self.tt_input_shape = tt_input_shape
+        self.tt_output_shape = tt_output_shape
+        self.tt_ranks = tt_ranks
         self.nonlinearity = nonlinearity
-        self.num_dim = len(input_shape)
-        cores_arr_len = np.sum(np.array(input_shape) * np.array(output_shape) * np.array(ranks[1:]) * np.array(ranks[:-1]))
+        self.num_dim = tt_input_shape.shape[0]
+        cores_arr_len = np.sum(tt_input_shape * tt_output_shape * tt_ranks[1:] * tt_ranks[:-1])
         self.cores_arr = self.add_param(cores, (cores_arr_len, 1), name='cores_arr')
 
     def get_output_for(self, input, **kwargs):
