@@ -43,7 +43,8 @@ class TTLayer(lasagne.layers.Layer):
         self.tt_ranks = tt_ranks
         self.nonlinearity = nonlinearity
         self.num_dim = tt_input_shape.shape[0]
-        cores_arr_len = np.sum(tt_input_shape * tt_output_shape * tt_ranks[1:] * tt_ranks[:-1])
+        cores_arr_len = np.sum(tt_input_shape * tt_output_shape *
+                               tt_ranks[1:] * tt_ranks[:-1])
         self.cores_arr = self.add_param(cores, (cores_arr_len, 1), name='cores_arr')
 
     def get_output_for(self, input, **kwargs):
@@ -51,6 +52,7 @@ class TTLayer(lasagne.layers.Layer):
         # iterations (see https://github.com/Theano/Theano/issues/2127),
         # so we are using `for loop` instead.
         res = input
+        # TODO: it maybe faster to precompute the indices in advance.
         core_arr_idx = 0
         for k in range(self.num_dim - 1, -1, -1):
             # res is of size o_k+1 x ... x o_d x batch_size x i_1 x ... x i_k-1 x i_k x r_k+1
@@ -62,7 +64,7 @@ class TTLayer(lasagne.layers.Layer):
             # res is of size o_k x o_k+1 x ... x o_d x batch_size x i_1 x ... x i_k-1 x r_k
             core_arr_idx += T.prod(curr_shape)
         # res is of size o_1 x ... x o_d x batch_size
-        res = res.reshape((input.shape[0], -1))
+        res = T.transpose(res.reshape((-1, input.shape[0])))
         # res is of size batch_size x o_1 x ... x o_d
         return self.nonlinearity(res)
 
