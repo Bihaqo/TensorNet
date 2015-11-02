@@ -43,9 +43,10 @@ class TTLayer(lasagne.layers.Layer):
         self.tt_ranks = tt_ranks
         self.nonlinearity = nonlinearity
         self.num_dim = tt_input_shape.shape[0]
-        cores_arr_len = np.sum(tt_input_shape * tt_output_shape *
-                               tt_ranks[1:] * tt_ranks[:-1])
-        self.cores_arr = self.add_param(cores, (cores_arr_len, 1), name='cores_arr')
+        local_cores_arr = _generate_orthogonal_tt_cores(tt_input_shape,
+                                                       tt_output_shape,
+                                                       tt_ranks)
+        self.cores_arr = self.add_param(local_cores_arr, local_cores_arr.shape, name='cores_arr')
 
     def get_output_for(self, input, **kwargs):
         # theano.scan doesn't work when intermediate results' shape changes over
@@ -70,3 +71,14 @@ class TTLayer(lasagne.layers.Layer):
 
     def get_output_shape_for(self, input_shape):
         return (input_shape[0], np.prod(self.tt_output_shape))
+
+
+import tt
+def _generate_orthogonal_tt_cores(input_shape, output_shape, ranks):
+    input_shape = np.array(input_shape)
+    output_shape = np.array(output_shape)
+    ranks = np.array(ranks)
+    cores_arr_len = np.sum(input_shape * output_shape *
+                           ranks[1:] * ranks[:-1])
+
+    return 0.1 * lasagne.utils.floatX(tt.rand(input_shape * output_shape, len(input_shape), ranks).round(eps=0).core)
