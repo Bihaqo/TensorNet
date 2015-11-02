@@ -21,6 +21,8 @@ class TTLayer(lasagne.layers.Layer):
                  cores=lasagne.init.Normal(0.01),
                  nonlinearity=lasagne.nonlinearities.rectify, **kwargs):
         super(TTLayer, self).__init__(incoming, **kwargs)
+        self.nonlinearity = (nonlinearities.identity if nonlinearity is None
+                             else nonlinearity)
         num_inputs = int(np.prod(self.input_shape[1:]))
         tt_input_shape = np.array(tt_input_shape)
         tt_output_shape = np.array(tt_output_shape)
