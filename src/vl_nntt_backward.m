@@ -19,7 +19,7 @@ function in = vl_nntt_backward(layer, in, out)
 %       O(ttRank^4 * modeSize * numTTCores^2 * inHeight * inWidth * inChannels * batchSize),
 %    where
 %       inHeight * inWidth * inChannels == modeSize^numTTCores.
-
+% TODO: make sure that we do not move the weights out of the GPU here
 layer.W.core = layer.weights{1};
 W = layer.W;
 [inHeight, inWidth, inChannels, batchSize] = size(in.x);
