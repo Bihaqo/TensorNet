@@ -17,6 +17,7 @@ class TTLayer(lasagne.layers.Layer):
     Examples
     --------
     """
+    # TODO: add biases.
     def __init__(self, incoming, tt_input_shape, tt_output_shape, tt_ranks,
                  cores=lasagne.init.Normal(0.01),
                  nonlinearity=lasagne.nonlinearities.rectify, **kwargs):
@@ -73,12 +74,26 @@ class TTLayer(lasagne.layers.Layer):
         return (input_shape[0], np.prod(self.tt_output_shape))
 
 
-import tt
 def _generate_orthogonal_tt_cores(input_shape, output_shape, ranks):
+    # Generate random orthogonalized tt-tensor.
     input_shape = np.array(input_shape)
     output_shape = np.array(output_shape)
     ranks = np.array(ranks)
     cores_arr_len = np.sum(input_shape * output_shape *
                            ranks[1:] * ranks[:-1])
-
-    return 0.1 * lasagne.utils.floatX(tt.rand(input_shape * output_shape, len(input_shape), ranks).round(eps=0).core)
+    cores_arr = lasagne.utils.floatX(np.zeros(cores_arr_len))
+    cores_arr_idx = 0
+    core_list = []
+    rv = 1
+    for k in range(input_shape.shape[0]):
+        shape = [ranks[k], input_shape[k], output_shape[k], ranks[k+1]]
+        tall_shape = (np.prod(shape[:3]), shape[3])
+        curr_core = np.dot(rv, lasagne.random.get_rng().normal(0, 1, size=(shape[0], np.prod(shape[1:]))))
+        curr_core = curr_core.reshape(tall_shape)
+        if k < input_shape.shape[0]-1:
+            curr_core, rv = np.linalg.qr(curr_core)
+        cores_arr[cores_arr_idx:cores_arr_idx+curr_core.size] = curr_core.flatten()
+        cores_arr_idx += curr_core.size
+    # TODO: use something reasonable instead of this dirty hack.
+    glarot_style = (np.prod(input_shape) * np.prod(ranks))**(1.0 / input_shape.shape[0])
+    return (0.1 / glarot_style) * lasagne.utils.floatX(cores_arr)
