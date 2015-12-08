@@ -17,9 +17,8 @@ class TTLayer(lasagne.layers.Layer):
     Examples
     --------
     """
-    # TODO: add biases.
     def __init__(self, incoming, tt_input_shape, tt_output_shape, tt_ranks,
-                 cores=lasagne.init.Normal(0.01),
+                 cores=lasagne.init.Normal(0.01), b=lasagne.init.Constant(0.),
                  nonlinearity=lasagne.nonlinearities.rectify, **kwargs):
         super(TTLayer, self).__init__(incoming, **kwargs)
         self.nonlinearity = (nonlinearities.identity if nonlinearity is None
@@ -47,7 +46,14 @@ class TTLayer(lasagne.layers.Layer):
         local_cores_arr = _generate_orthogonal_tt_cores(tt_input_shape,
                                                        tt_output_shape,
                                                        tt_ranks)
-        self.cores_arr = self.add_param(local_cores_arr, local_cores_arr.shape, name='cores_arr')
+        self.cores_arr = self.add_param(local_cores_arr, local_cores_arr.shape,
+                                        name='cores_arr')
+        if b is None:
+            self.b = None
+        else:
+            num_units = np.prod(tt_output_shape)
+            self.b = self.add_param(b, (num_units,), name="b",
+                                    regularizable=False)
 
     def get_output_for(self, input, **kwargs):
         # theano.scan doesn't work when intermediate results' shape changes over
@@ -68,6 +74,8 @@ class TTLayer(lasagne.layers.Layer):
         # res is of size o_1 x ... x o_d x batch_size
         res = T.transpose(res.reshape((-1, input.shape[0])))
         # res is of size batch_size x o_1 x ... x o_d
+        if self.b is not None:
+            res = res + self.b.dimshuffle('x', 0)
         return self.nonlinearity(res)
 
     def get_output_shape_for(self, input_shape):
