@@ -5,7 +5,7 @@ This is a MATLAB and Theano+Lasagne implementation of the _Tensor Train layer_ (
 For the additional information see the following paper:
 
 Tensorizing Neural Networks  
-Alexander Novikov, Dmitry Podoprikhin, Anton Osokin, Dmitry Vetrov; In _Advances in Neural Information Processing Systems 28_ (NIPS-2015) [[pdf](http://arxiv.org/pdf/1509.06569v1.pdf)].
+Alexander Novikov, Dmitry Podoprikhin, Anton Osokin, Dmitry Vetrov; In _Advances in Neural Information Processing Systems 28_ (NIPS-2015) [[arXiv](http://arxiv.org/abs/1509.06569)].
 
 Please cite it if you write a scientific paper using this code.  
 In BiBTeX format:
