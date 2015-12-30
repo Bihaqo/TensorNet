@@ -1,5 +1,5 @@
-TensorNet
-==========
+# TensorNet
+
 
 This is a MATLAB and Theano+Lasagne implementation of the _Tensor Train layer_ (_TT-layer_) of a neural network. In short, the TT-layer acts as a fully-connected layer but is much more compact and allows to use lots of hidden units without slowing down the learning and inference.   
 For the additional information see the following paper:
@@ -20,7 +20,7 @@ In BiBTeX format:
 
 # Installation
 
-## MATLAB version
+### MATLAB version
 
 Install the [TT-Toolbox](https://github.com/oseledets/TT-Toolbox) (just download it and run `setup.m` to add everything important into the MATLAB path).
 
@@ -39,13 +39,12 @@ To test GPU support (if you have compiled MatConvNet in GPU mode) use:
 vl_test_ttlayers(1)
 ```
 
-## Theano+Lasagne version
+### Theano+Lasagne version
 Install fresh version of [Theano](http://deeplearning.net/software/theano/) and [Lasagne](https://lasagne.readthedocs.org/en/latest/).
 
 Copy this repository and add the `src/python` folder into the Python path.
 
-Experiments
-==========
+# Experiments
 Right now just one basic example with the MNIST dataset is available (more experiments from the paper are coming soon). To try it out, navigate to the `experiments/mnist` folder and type the following command in the MATLAB prompt:
 ``` matlab
 [net_tt, info_tt] = cnn_mnist_tt('expDir', 'data/mnist-tt');
