@@ -44,8 +44,28 @@ Install fresh version of [Theano](http://deeplearning.net/software/theano/) and 
 
 Copy this repository and add the `src/python` folder into the Python path.
 
-# Experiments
-Right now just one basic example with the MNIST dataset is available (more experiments from the paper are coming soon). To try it out, navigate to the `experiments/mnist` folder and type the following command in the MATLAB prompt:
+# Pretrained models
+### MNIST shapes
+In this experiment we compared how shapes and ranks influence the performance of the TT-layer using the MNIST dataset (see figure 1 and section 6.1 of the original paper for the details). Download [models in the MatConvNet format](https://dl.dropboxusercontent.com/u/49234889/tensor-net/mnist_shapes/mnist_shapes.mat) (.mat file, 2.9 Mb) and [preprocessed MNIST dataset](https://dl.dropboxusercontent.com/u/49234889/tensor-net/mnist_shapes/imdb.mat) (.mat file, 132 Mb).
+
+You will find a cell array of models with metadata, the first and the last epochs of training included for each model. Example of usage (computing the validation error):
+``` matlab
+imdb = load('imdb.mat');
+load('mnist_shapes.mat');
+% Choose (for example) the 5-th model whose shape equal 4 x 8 x 8 x 4.
+net = models{5}.lastEpoch.net;
+% Remove the softmax layer (unnecessary during the validation).
+net.layers(end) = [];
+valIdx = find(imdb.images.set == 3);
+res = vl_simplenn(net, imdb.images.data(:, :, :, valIdx));
+scores = squeeze(res(end).x);
+[bestScore, best] = max(scores);
+acc = mean(best == imdb.images.labels(valIdx));
+fprintf('Accuracy is %f\n', acc);
+```
+
+# Reproducing experiments
+Right now just one basic example on the MNIST dataset is available (more experiments from the paper are coming soon). To try it out, navigate to the `experiments/mnist` folder and type the following command in the MATLAB prompt:
 ``` matlab
 [net_tt, info_tt] = cnn_mnist_tt('expDir', 'data/mnist-tt');
 ```
