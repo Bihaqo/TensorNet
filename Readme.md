@@ -1,7 +1,9 @@
 # TensorNet
 
 
-This is a MATLAB and Theano+Lasagne implementation of the _Tensor Train layer_ (_TT-layer_) of a neural network. In short, the TT-layer acts as a fully-connected layer but is much more compact and allows to use lots of hidden units without slowing down the learning and inference.   
+This is a MATLAB and Theano+Lasagne implementation of the _Tensor Train layer_ (_TT-layer_) of a neural network. For a [TensorFlow implementation](https://github.com/timgaripov/TensorNet-TF) see a separate repository.
+
+In short, the TT-layer acts as a fully-connected layer but is much more compact and allows to use lots of hidden units without slowing down the learning and inference.   
 For the additional information see the following paper:
 
 Tensorizing Neural Networks  
