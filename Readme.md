@@ -48,7 +48,7 @@ Copy this repository and add the `src/python` folder into the Python path.
 
 # Pretrained models
 ### MNIST shapes
-In this experiment we compared how shapes and ranks influence the performance of the TT-layer using the MNIST dataset (see figure 1 and section 6.1 of the original paper for the details). Download [models in the MatConvNet format](https://dl.dropboxusercontent.com/u/49234889/tensor-net/mnist_shapes/mnist_shapes.mat) (.mat file, 2.9 Mb) and [preprocessed MNIST dataset](https://dl.dropboxusercontent.com/u/49234889/tensor-net/mnist_shapes/imdb.mat) (.mat file, 132 Mb).
+In this experiment we compared how shapes and ranks influence the performance of the TT-layer using the MNIST dataset (see figure 1 and section 6.1 of the original paper for the details). Download [models in the MatConvNet format](https://www.dropbox.com/s/zk3fqnj2pyxek5c/mnist_shapes.mat?dl=1) (.mat file, 2.9 Mb) and [preprocessed MNIST dataset](https://www.dropbox.com/s/annpg39hbmdxrig/imdb.mat?dl=1) (.mat file, 132 Mb).
 
 You will find a cell array of models with metadata, the first and the last epochs of training included for each model. Example of usage (computing the validation error):
 ``` matlab
